@@ -1,0 +1,102 @@
+<!--this is a basic structure of a form-->
+<!--forms can contain text fields, text areas, checkboxes, radio buttons etc.-->
+<!--all these stuff should be inside a form tag-->
+<!--inside the form tag we can use multiple divs containing form-group bootstrap class and this is only a bootstrap requirement we dont always need to use a div before other tags(text fields)-->
+<!--each div is difined with form-group bootstrap class to give modern look and feel-->
+<!--and tags that are retreiving data from the user, such as text fields, text areas, checkboxes, radio buttons etc. have a form-control bootstrap class to give modern look and feel-->
+<form>
+    <div class="form-group">
+        <label for="firstName">First Name</label>                   <!--we have used the same name for the id and the form to make the accesibility of these tags easy-->
+        <input id="firstName" type="text" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="comment">Comment</label>
+        <textarea id="comment" cols="30" rows="10" class="form-control"></textarea>
+    </div>
+    <button class="btn btn-primary">Submit</button>
+</form>
+
+<!--when using forms in angular there are couple of objects that we use to perform various types of tasks by accessing that objects's properties-->
+<!--two objects that we are using is FormGroup and FormControl-->
+<!--each object have various properties value, touched, valid, dirty, errors, untouched etc-->
+<!--some of these properties can do following thing-->
+<!--value property will give you the value user inputed in a input field, valid will output a boolean value to notify whether the user input data is valid or not-->
+<!--so FormGroup can have multiple input fields and each input field should have FormController-->
+<!--when using these objects, there are two types of form-->
+<!--1) templatedriven forms  2) reactive forms-->
+<!--in template driven forms we use the predifined objects and in reactive forms we code these objects to our needs-->
+<!--in here we are using templatedriven froms-->
+
+
+
+
+<!--form has a FormGroup class-->
+<!--we use ngForm to bind with the FormGroup class-->
+<!--ngSubmit will help us to output ngForm-->
+<!--this ngSubmit is a output property and because of that this raise events and we should use event binding to use this-->
+<!--so we're creating a template variable to access the ngSubmit-->
+<!--we are using ngSubmit to call the method the "submit()" method that i've created in the ts file-->
+<!--angular by default apply a directive called ngForm in here so we dont have to call ngForm again in here like we did for ngModel but i did add it so theres no confusion-->
+<form #formData="ngForm" ngForm (ngSubmit) = "submit(formData)">
+    <div class="form-group">
+        <label for="firstName">First Name</label>      
+        <!--when we use ngModel directive with a name defined, angular will create an instance of the FormControl class and connect with this input field-->
+        <!--declearing a name to the input field is a must when you use the ngModel directive-->   
+        
+        <!--we can use "required" to validate the input. after using this, the property "valid" in fromControl object will output "true" if user enters a value into this input field-->
+        <!--we have used a template variable called "accessFormControl" to access the ngModel directive-->
+        <!--we can use minlength and maxlength to difine more validation-->
+        <!--we might be able to fine more attributes to give more validations-->
+        <!--ive added a style in the css file to display a red color border when the input is invalid-->
+        <input required minlength="3" maxlength="10" ngModel #accessFormControl="ngModel" name="firstName" id="firstName" type="text" class="form-control">  
+        <!--so in this div the main purpose is to display an error message if the user inputs are not valid--> 
+        <!--the class ive added is just a bootstrap class-->
+        <!--ive used the ngIf directive to check whether the valid property thats inside the fromControl object has a false output, if the condition is true, then display the error message-->
+        <!--furthermore ive checked whether the user is seeing the screen for the first time and not clicked inside the input field or not by the help of touched property-->
+        <!--the error message will display only after user clicked inside the input field and clicked outside without entering anything-->
+        <!--if you want to give specific error messages you can use errors property for that-->
+        <div class="alert alert-danger" *ngIf = "accessFormControl.control.touched && !accessFormControl.control.valid">           
+            <div *ngIf = "accessFormControl.control.errors!.required">First Name is required.</div>
+            <div *ngIf = "accessFormControl.control.errors!.minlength">Minimum length should be 3.</div>
+        </div>
+    </div>
+
+    <!--ngModelGroup is the parent class of the ngModel class-->
+    <!--so if you want to group inputs into smaller sections, we can use ngModelGroup for that so the output values of the ngForm will also be devided according to the groups-->
+    <!--if we have private details, contact details, address details and document details in a single form, we can use 4 ngModelGroups to each section so we can have 4 output value objects-->
+    <div ngModelGroup = "comment">
+        <div class="form-group">
+            <label for="comment">Comment</label>
+            <textarea ngModel name="comment" id="comment" cols="30" rows="10" class="form-control"></textarea>
+        </div>
+    </div>
+
+    <!--in here ive added a checkbox-->
+    <!--so basically we need to add the ngModel with a name for each input field and it will be added to the values so that we can retrieve them on submit event-->
+    <div class="checkbox">
+        <label>
+            Monthly Subscription
+        </label>
+        <input ngModel type="checkbox" name="subsMonthly"/>
+    </div>
+
+    <div class="form-group">
+        <label for="dropDown">
+            Dropdown List
+        </label>
+        <select class="form-control" ngModel name="dropDown" id="dropDown">
+            <option *ngFor = "let option of dropdown" [value]="option.id"> {{option.name}} </option>
+        </select>
+    </div>
+
+    
+    <div *ngFor= "let radio of dropdown" class="radio">
+        <label>
+            <input ngModel type="radio" [value]="radio.id" name="radio">
+            {{radio.name}} 
+        </label>
+    </div>
+
+    <p>{{ formData.value | json }}</p>
+    <button class="btn btn-primary" [disabled] = "!formData.valid">Submit</button>
+</form>

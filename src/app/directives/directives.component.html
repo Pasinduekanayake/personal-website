@@ -1,0 +1,90 @@
+<!--this is the old method of using ngIf directive. this method of using ngIf makes repeat the code so its not efficient-->
+<!--and also by using ngIf, angular checks the condition and add the code thats only satisfing(if(true)) the condition to the DOM so the code thats not satisfing the if condition will not add in to the DOM-->
+<!--you can find the DOM when you inspect a webpage in the browser. so if you inspect this section, only one div will be displayed in there out of these two divs-->
+<!--seems like this old implimentation method doesnt work now so ill comment it out-->
+
+<!--
+
+<div *ngIf= "coursesList.length > 0">
+    List Of Courses
+</div>
+<div ngIf= "coursesList.length == 0">
+    No List Of Courses
+</div>
+
+-->
+
+
+<!--this is the new approch(angular 4 onwards) of using the ngIf directive-->
+<!--here we have used the ngIf as if-else conditions in normal programming languages-->
+<!--we have to define a variable inside this ng-template tag to make each tag unique so that we can render them if a condition is satisfied-->
+<!--in the ngIf directive the ";" ends the condition and "then" will have the output if true and "else" will have the output of false-->
+<div *ngIf = "coursesList.length > 0; then Variable1 else Variable2"></div>
+<ng-template #Variable1>      <!--we difine template variables using # sign-->
+    List Of Courses with ngIf directive
+</ng-template>
+<ng-template #Variable2>
+    No List Of Courses with ngIf directive
+</ng-template>
+
+<!--theres another way to show or hide a part of a page other than using ngIf directive-->
+<!--the only difference between using the ngIf directive and hidden property is that when using hidden property the code will be added to the DOM but will be hidden but in ngIf the false condition will not be added to the DOM-->
+<!--because of this difference, if you work on a large project, using ngIf directive will be the best way to go-->
+
+
+<!--the other way is to use the hidden property-->
+<!--so using property binding we can bind a boolean value for this hidden property so the div will hide if the condition is true-->
+<!--so in the below div the "courses.length == 0" will give true or false and if true that mean there are no courses so the "List Of Courses" will be hidden-->
+<div [hidden] = "coursesList.length == 0">
+    List Of Courses with Hidden property
+</div>
+<div [hidden] = "coursesList.length > 0">
+    No List Of Courses with Hidden property
+</div>
+
+
+<!--ngFor directive helps us to iterate through an array of some sort-->
+<ul>
+    <li *ngFor = "let example of exampleNgFor" >{{ example.id }} {{ example.name }} </li>
+</ul>
+
+<!--we can manipulate the exampleNgFor array with the help of angular's change detection-->
+<!--change detection happens when an AJAX request,DOM Events or timer function was completed from the UI-->
+<button (click)="addRecord()">Add</button>
+<ul>
+    <li *ngFor = "let example of exampleNgFor" >{{ example.id }} {{ example.name }} 
+        <button (click) ="removeRecord(example)" > Remove </button>
+    </li>
+    
+</ul>
+
+
+<!--angular load this objects based on their memory location and everytime we load these objects, the memory location of those objects will be different. therefore angular load these data everytime we click the Load button-->
+<!--we can use trackBy to implement a method to track the content that have to be downloaded by anything we want-->
+<button (click)="loadData()">Load</button>
+<ul>
+    <li *ngFor = "let data of apiData; trackBy: trackData" >{{ data.id }} {{ data.name }} </li>
+    
+</ul>
+
+<!--when it comes to directives, there are a type of directives called attribute directives-->
+<!--the sytax to use attribute directives is same as property binding syntax. we dont need * in this case-->
+<!--when we bind classes using property binding, we duplicated code for each class but we can use ngClass directive to reduce that-->
+<button (click) = "save()">
+    <span [ngClass] = "{ 'bi-bell': isSelected, 'bi-bell-fill': !isSelected }" ></span>
+</button>
+
+<!--save as classes, styles can also be code as attribute directives with ngStyles, same syntax as ngClass-->
+<button (click) = "save()">
+    <span [ngStyle] = "{ 'backgroundColor': isSelected? 'blue': 'red', 'color': !isSelected? 'black': 'white' }" ></span>
+</button>
+
+
+<!--we can create custom directives aswell-->
+<!--so the custom directive can be used with this syntax, without the [] syntax-->
+<!--and we can use [formatNew] property that we defined in the directive.ts file to give a lowercase or uppercase value-->
+<input type="text" appFormat [formatNew] = "'lowercase'"/>
+
+<!--we can use the alias name as the directive.ts files selector name so that we can call the directive with the property binding syntax-->
+<input type="text" [appFormat] = "'lowercase'"/>
+

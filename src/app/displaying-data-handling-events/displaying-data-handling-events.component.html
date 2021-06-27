@@ -1,0 +1,83 @@
+<h2>{{ title }}</h2>                  <!--this is string interpolation-->
+<img [src]="imgUrl" />               <!--this is property binding.-->
+
+
+<!--
+html should have to run through the DOM(document object module) to display content in the browser.  so in order to do that html is connected with the DOM
+And property binding means binding properties in DOM with our input data. most of the html attributes are connected with the DOM properties but there are some 
+attributes which are not connected like that. because of this, if devlopers tried property binding with html attributes which are not connected with DOM properties 
+browser will not throw errors.
+
+one of the html attributes that are not connected with the DOM properties is "colspan" in a "<td>" tag. so when this happens we should bind that attributes specifically
+-->
+
+<table>
+    <tr>
+        <td [attr.colspan] = "cols"></td>
+    </tr>
+</table>
+
+<!--we can use this property binding syntax to bind classes. [class.active] will take a boolean value and bind the class if true-->
+<button class="btn btn-primary" [class.active]="isActive">Button</button> <br><br>
+
+
+<!--we can use this property binding syntax to bind styles aswell. [stlye.backgroundColor] will take a boolean value and bind the one color if true and another color if not-->
+<button class="btn" [style.backgroundColor] = "isActive ? 'red' : 'green'">button</button> <br><br>    <!--we can google what are the properties we have for the style class in DOM-->
+
+
+<!--we can use () to bind events such as mouse clicks, scroll, etc. we should bind an event with a method in our typescript class-->
+<button class="btn btn-primary" (click) = "onClick()">Click Event</button> <br><br> 
+
+
+<!--somethimes we need to access the event object thats in the event handler. for do that we should use $event in the method-->
+<div (click)="eventBubbling()">      
+<!--because of event bubbling when we click the button below, the click event in this div will also be triggered. so to stop it we should add an handler in the getEvent($event) method-->
+    <button class="btn btn-primary" (click) = "getEvent($event)">Access Event Object in Event Handler</button> 
+</div> <br><br> 
+
+
+<!--event filtering is triggering an event if a condition is met-->
+EventFiltering 1 - <input (keyup)="onKeyUp($event)"  /> <br><br>   <!--we can use the event object by using "$event" in the method. but this way is not working currently-->
+
+EventFiltering 2 - <input (keyup.enter)="newOnKeyUp()"  /> <br><br>  <!--this is the best way of doing event filtering because we dont have to write conditions in the method.-->
+
+
+<!--so if we want to retrive the value inserted to the input field, there are two ways. 1) using event object.  2) using template variables-->
+GetEnteredValues 1 - <input (keyup.enter) = "getValue($event)" /> <br><br>  <!--we can use the event object by using "$event" in the method to retreive the data. but this way is not best-->
+
+GetEnteredValues 2(Template Variable) - <input #email (keyup.enter) = "newGetValue(email.value)" />  <!-- the email is a template variable that we defined and we can use to store the value inserted. so by using that we dont need $event object-->
+<br><br>
+
+<!--giving parameters in the method(as the above line) is an old way of programming. so we can have a variable define in the class and we can set the value to that variable and use it using property binding-->
+<!--property binding is from component to the view only. so the variable "newEmail" will not change when a user change the input field value from the view-->
+OneWayDataBinding - <input [value] = "newEmail" (keyup.enter) = "getInput()" />   <!--by using property binding we displays the value inside the newEmail variable but if the value changes from UI, it wont recognise the new value-->
+<br><br>
+
+<!--we use two way binding to bind the values from the class and to the class. we use banana in the box "[()]" syntax to bind two ways -->
+<!--the ngModule is not a default property of the DOM. its a property thats added to the DOM by angular and this property is inside the angular forms module-->
+<!--since this forms module is not compalsory for an angular project its not imported by default. so we should inport the forms manually to use it.-->
+TwoWayDataBinding - <input [(ngModel)] = "newEmail" (keyup.enter) = "getInputTwoWay()" />
+<br><br><br><br>
+
+<!--pipes help us to restructure the data to the way we want them to display. this is useful when we get unstructured data coming from APIs-->
+<h1>Default Pipes</h1>
+<h4>Without Pipes</h4>
+{{ course.title }}  <br/>
+{{course.percentage}} <br/>
+{{course.employees}} <br/>
+{{course.salary}} <br/>
+{{course.dateNow}} <br/><br/>
+
+<h4>With Pipes</h4>
+Title - {{ course.title | uppercase}} <br/>
+Percentage - {{course.percentage | number: '1.2-2'}} <br/>
+Employees - {{course.employees | number}} <br/>
+Salary - {{course.salary | currency:'LKR':true:'1.2-2'}} <br/>
+DateNow - {{course.dateNow | date}} <br/><br/>
+
+
+<!--same as we create components, we can create pipes-->
+<h1>Custom Pipes</h1>
+Summary Without Pipe - {{customPipeValue}} <br/>
+Summary WithCustom Pipe - {{customPipeValue | summary}} <br/>   <!--we should call the pipe by the name we defined in the pipe declarator-->
+Summary Pipe with custom limit - {{customPipeValue | summary:20}}  <!--we can difine a custom limit simce we defined an extra paramter in the pipe class - trnasform method-->

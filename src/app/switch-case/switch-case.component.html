@@ -1,0 +1,10 @@
+<ul class="nav nav-pills">
+    <li class="nav-item" [class.active] = "viewMode == 'Map'"><a class="nav-link" (click) = "viewMode = 'Map'">Map View</a></li>
+    <li class="nav-item" [class.active] = "viewMode == 'List'"><a class="nav-link" (click)="viewMode = 'List'">List View</a></li>
+</ul>
+
+<!--we have to use the angular property called ngSwitch for this-->
+<div [ngSwitch] = "viewMode">
+    <div *ngSwitchCase = "'Map'">This is Map View</div>
+    <div *ngSwitchCase = "'List'">This is List View</div>
+</div>

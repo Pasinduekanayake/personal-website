@@ -1,0 +1,18 @@
+<!--div.card>div.card-heading+div.card.body  this is how to code all the following code in one go-->
+<!--following Heading anf Body words are hardcoded but we can make them dynamic-->
+<div class="card">
+    <div class="card-heading">Heading</div>
+    <div class="card-body">Body</div>
+</div>
+
+<!--we should use ng-content to give data dynamically-->
+<div class="card">
+    <div class="card-heading">
+        <!--we should use selectors to make each ng-content tag unique. we should give css classes, ids etc to give a unique name-->
+        <!--when we give a value, this ng-content will be replaced by the new value-->
+        <ng-content select=".heading"></ng-content>
+    </div>
+    <div class="card-body">
+        <ng-content select=".body"></ng-content>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<!--can use router link to set a link to the screen-->
+<!--routerLinkActive will help us to keep track on what link is active currently so that we can use styles that are in only the active screens-->
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">Angular Test</span>
+
+        <a routerLinkActive="active current" class="navbar-brand" routerLink="/templateDriven">TemplateDriven</a>
+        
+        <a routerLinkActive="active current" class="navbar-brand" routerLink="/displayData">DisplayData</a>
+        
+        <a routerLinkActive="active current" class="navbar-brand" routerLink="/ngContent">NgContent</a>
+
+        <!--we use queryParams property to define more parameters to the route so that the relevant screen can use it if needed-->
+        <!--one use of this is when we have a table and there are many records to be displayed, we should have pagination so we can use these query parameters to keep track on the page numbers etc.-->
+        <!--the queryParams expect an object so we can define any number of parameters inside that object-->
+        <a routerLinkActive="active current" class="navbar-brand" routerLink="/dynamicRoutes" [queryParams]="{ page: 1, order:'newest'}">DynamicRoutes</a>
+    </div>
+  </nav>

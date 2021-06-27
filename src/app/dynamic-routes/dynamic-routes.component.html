@@ -1,0 +1,5 @@
+<!--normally we get data from API and use that to navigate to separate screens if needed.-->
+<!--for this we bind routerLink using property binding and make the link as we want inside a array-->
+<div *ngFor ="let record of recordList" >
+    <button [routerLink]="['/dynamicRoutes', record.id]">{{record.id}} Record</button>
+</div>
